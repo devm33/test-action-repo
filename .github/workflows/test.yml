@@ -29,11 +29,11 @@ jobs:
                     for dir in */; do
                         cd $dir
                         if [[ "$dir" == *"windows/"* ]]; then
-                            zip -r copilot#copilot-${dir%/}.zip copilot
-                            mv copilot#copilot-${dir%/}.zip ..
+                            zip -r copilot-${dir%/}.zip copilot
+                            mv copilot-${dir%/}.zip ..
                         else
-                            tar -czf copilot#copilot-${dir%/}.tar.gz copilot
-                            mv copilot#copilot-${dir%/}.tar.gz ..
+                            tar -czf copilot-${dir%/}.tar.gz copilot
+                            mv copilot-${dir%/}.tar.gz ..
                         fi
                         cd ..
                     done
