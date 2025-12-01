@@ -45,6 +45,6 @@ jobs:
                   --title "v0.0.${{ github.run_number }}" \
                   --repo ${{ github.repository }} \
                   --notes "Automated release" \
-                  ./dist-bin/*
+                  ./dist-bin/*.zip ./dist-bin/*.tar.gz
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
