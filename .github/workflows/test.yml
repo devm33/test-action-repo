@@ -38,6 +38,7 @@ jobs:
               run: |
                 gh release create v0.0.${{ github.run_number }} \
                   --title "v0.0.${{ github.run_number }}" \
+                  --repo ${{ github.repository }} \
                   --notes "Automated release" \
                   ${{ steps.executables.outputs.EXECUTABLES }}
               env:
