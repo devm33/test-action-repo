@@ -22,16 +22,21 @@ jobs:
                     done
                     ls -R dist-bin/
 
-            - name: Capture output 
-              id: executables
+            - name: Zip / tar executables
               shell: bash
               working-directory: dist-bin
               run: |
-                    echo -n "EXECUTABLES=" >> $GITHUB_OUTPUT
                     for dir in */; do
-                      echo -n "'./dist-bin/${dir}copilot#copilot-${dir%/}' " >> $GITHUB_OUTPUT
+                        cd $dir
+                        if [[ "$dir" == *"windows/"* ]]; then
+                            zip -r copilot#copilot-${dir%/}.zip copilot
+                            mv copilot#copilot-${dir%/}.zip ..
+                        else
+                            tar -czf copilot#copilot-${dir%/}.tar.gz copilot
+                            mv copilot#copilot-${dir%/}.tar.gz ..
+                        fi
+                        cd ..
                     done
-                    echo "" >> $GITHUB_OUTPUT
             
             - name: Create release
               shell: bash
@@ -40,6 +45,6 @@ jobs:
                   --title "v0.0.${{ github.run_number }}" \
                   --repo ${{ github.repository }} \
                   --notes "Automated release" \
-                  ${{ steps.executables.outputs.EXECUTABLES }}
+                  ./dist-bin/*
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
