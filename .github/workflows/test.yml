@@ -27,8 +27,11 @@ jobs:
               shell: bash
               working-directory: dist-bin
               run: |
-                    execs=$(for dir in */; do echo "./dist-bin/${dir}copilot#copilot-${dir%/}"; done)
-                    echo "EXECUTABLES=$execs" >> $GITHUB_OUTPUT
+                    echo "EXECUTABLES<<EOF" >> $GITHUB_OUTPUT
+                    for dir in */; do
+                      echo "./dist-bin/${dir}copilot#copilot-${dir%/}" >> $GITHUB_OUTPUT
+                    done
+                    echo "EOF" >> $GITHUB_OUTPUT
             
             - name: Create release
               shell: bash
