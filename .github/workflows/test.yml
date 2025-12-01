@@ -16,7 +16,7 @@ jobs:
                     for os in darwin linux windows; do
                         for arch in x64 arm64; do
                             mkdir -p dist-bin/${os}-${arch}/
-                            echo "#!/usr/bin/env bash\necho hi" > dist-bin/${os}-${arch}/copilot
+                            echo -e "#!/usr/bin/env bash\necho hi" > dist-bin/${os}-${arch}/copilot
                             chmod +x dist-bin/${os}-${arch}/copilot
                         done
                     done
