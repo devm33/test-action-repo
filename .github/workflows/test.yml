@@ -1,0 +1,40 @@
+name: Test Workflow
+
+on:
+    push:
+
+permissions:
+    contents: write
+
+jobs:
+    test:
+        runs-on: ubuntu-slim
+        steps:
+            - name: Create dummy files
+              run: |
+                    mkdir -p dist-bin/
+                    for os in darwin linux windows; do
+                        for arch in x64 arm64; do
+                            mkdir -p dist-bin/${os}-${arch}/
+                            echo "#!/usr/bin/env bash\necho hi" > dist-bin/${os}-${arch}/copilot
+                            chmod +x dist-bin/${os}-${arch}/copilot
+                        done
+                    done
+                    ls -R dist-bin/
+
+            - name: Capture output 
+              id: executables
+              shell: bash
+              run: |
+                    output=$(for dir in */; do echo "'./${dir}copilot#copilot-${dir%/}'"; done)
+                    echo "EXECUTABLES=$output" >> $GITHUB_OUTPUT
+            
+            - name: Create release
+              shell: bash
+              run: |
+                gh release create v0.0.${{ github.run_number }} \
+                  --title "v0.0.${{ github.run_number }}" \
+                  --notes "Automated release" \
+                  ${{ steps.executables.outputs.EXECUTABLES }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
