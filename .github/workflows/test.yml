@@ -30,13 +30,14 @@ jobs:
                         cd $dir
                         if [[ "$dir" == *"windows/"* ]]; then
                             zip -r copilot-${dir%/}.zip copilot
-                            mv copilot-${dir%/}.zip ..
+                            mv *.zip ..
                         else
                             tar -czf copilot-${dir%/}.tar.gz copilot
-                            mv copilot-${dir%/}.tar.gz ..
+                            mv *.tar.gz ..
                         fi
                         cd ..
                     done
+                    ls -R .
             
             - name: Create release
               shell: bash
